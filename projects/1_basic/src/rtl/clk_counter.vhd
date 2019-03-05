@@ -24,6 +24,7 @@ ENTITY clk_counter IS GENERIC(
                                cnt_en_i  : IN  STD_LOGIC; -- signal dozvole brojanja
                                cnt_rst_i : IN  STD_LOGIC; -- signal resetovanja brojaca (clear signal)
                                one_sec_o : OUT STD_LOGIC  -- izlaz koji predstavlja proteklu jednu sekundu vremena
+									
                              );
 END clk_counter;
 
@@ -36,6 +37,27 @@ BEGIN
 -- DODATI:
 -- brojac koji kada izbroji dovoljan broj taktova generise SIGNAL one_sec_o koji
 -- predstavlja jednu proteklu sekundu, brojac se nulira nakon toga
+process(clk_i, rst_i) begin
+	if (rst_i = '1') then 
+	counter_r <= (others => '0');
+	elsif(rising_edge(clk_i))then 
+		   if(cnt_rst_i = '1')then 
+			counter_r <= (others => '0');
+	  	   else
+			  if(cnt_en_i = '1') then 
+					if(counter_r = "10111110101111000010000000") then 
+					counter_r <= (others => '0');
+					else
+					counter_r <= counter_r + "00000000000000000000000001";
+					end if;
+			  else 
+					counter_r <= counter_r;
+			  end if;
+			end if;
+	end if;
+end process;
 
+one_sec_o <= '1' when counter_r = "10111110101111000010000000" else
+				 '0';
 
 END rtl;

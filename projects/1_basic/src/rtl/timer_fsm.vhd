@@ -36,6 +36,8 @@ BEGIN
 
 -- DODATI :
 -- automat sa konacnim brojem stanja koji upravlja brojanjem sekundi na osnovu stanja prekidaca
-
+process (reset_switch_i, start_switch_i, stop_switch_i, continue_switch_i) 
+	case (curent_state)
+end process;
 
 END rtl;
